@@ -1,22 +1,21 @@
-# remark-mdx-frontmatter
+# remark-mdx-next
 
-[![github actions][github actions badge]][github actions] [![npm][npm badge]][npm]
-[![prettier][prettier badge]][prettier]
-
-> A [remark][] plugin for converting frontmatter metadata into MDX exports
+> A [remark][] plugin for converting frontmatter metadata into getStaticProps
 
 ## Installation
 
 This package depends on the AST output by [remark-frontmatter][]
 
 ```sh
-npm install remark-frontmatter remark-mdx-frontmatter
+npm install remark-frontmatter remark-mdx-next
 ```
 
 ## Usage
 
-This remark plugin takes frontmatter content, and outputs it as JavaScript exports. Both YAML and
-TOML frontmatter data are supported.
+This remark plugin takes frontmatter content from mdx files and outputs it as props in
+getStaticProps for use in Next.js apps. Both YAML and TOML frontmatter data are supported.
+
+Based on the great [remark-mdx-frontmatter] plugin.
 
 For example, given a file named `example.mdx` with the following contents:
 
@@ -48,7 +47,13 @@ Roughly yields:
 
 ```jsx
 export const hello = 'frontmatter';
-
+export function getStaticProps() {
+  return {
+    props: {
+      hello: 'frontmatter',
+    },
+  };
+}
 export default function MDXContent() {
   return <p>Rest of document</p>;
 }
@@ -62,13 +67,3 @@ By default, every frontmatter object key is turned into a JavaScript export. If 
 the YAML content is exported as one single export using this name. This is useful if you wish to use
 top-level frontmatter nodes other than objects, or if the frontmatter content contains keys which
 aren’t valid JavaScript identifiers.
-
-[github actions badge]:
-  https://github.com/remcohaszing/remark-mdx-frontmatter/actions/workflows/ci.yml/badge.svg
-[github actions]: https://github.com/remcohaszing/remark-mdx-frontmatter/actions/workflows/ci.yml
-[npm badge]: https://img.shields.io/npm/v/remark-mdx-frontmatter
-[npm]: https://www.npmjs.com/package/remark-mdx-frontmatter
-[prettier badge]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg
-[prettier]: https://prettier.io
-[remark]: https://remark.js.org
-[remark-frontmatter]: https://github.com/remarkjs/remark-frontmatter
