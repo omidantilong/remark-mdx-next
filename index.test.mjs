@@ -6,10 +6,9 @@ import { compile, compileSync } from '@mdx-js/mdx';
 import remarkFrontmatter from 'remark-frontmatter';
 import test from 'tape';
 
-const { remarkMdxFrontmatter } = createRequire(import.meta.url)('./src/index.ts');
+const { remarkMdxNext } = createRequire(import.meta.url)('./src/index.ts');
 
 const tests = readdirSync('__fixtures__');
-
 for (const name of tests) {
   test(name, async (t) => {
     const path = join('__fixtures__', name);
@@ -19,14 +18,16 @@ for (const name of tests) {
     const { value } = await compile(input, {
       remarkPlugins: [
         [remarkFrontmatter, ['yaml', 'toml']],
-        [remarkMdxFrontmatter, options],
+        [remarkMdxNext, options],
       ],
       jsx: true,
     });
     if (process.argv.includes('--write')) {
       await fs.writeFile(expected, value);
     }
-    t.equal(value, await fs.readFile(expected, 'utf8'));
+    const expectedFile = await fs.readFile(expected, 'utf8');
+
+    t.equal(value, expectedFile);
     t.end();
   });
 }
@@ -35,7 +36,7 @@ test('unsupported types', (t) => {
   t.throws(
     () =>
       compileSync('---\nunsupported value\n---\n', {
-        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+        remarkPlugins: [remarkFrontmatter, remarkMdxNext],
         jsx: true,
       }),
     'Expected frontmatter data to be an object, got:\n---yaml\nunsupported value\n---',
@@ -47,7 +48,7 @@ test('invalid name', (t) => {
   t.throws(
     () =>
       compileSync('---\n\n---\n', {
-        remarkPlugins: [remarkFrontmatter, [remarkMdxFrontmatter, { name: 'Not valid' }]],
+        remarkPlugins: [remarkFrontmatter, [remarkMdxNext, { name: 'Not valid' }]],
         jsx: true,
       }),
     'If name is specified, this should be a valid identifier name, got: "Not valid"',
@@ -59,7 +60,7 @@ test('invalid yaml key', (t) => {
   t.throws(
     () =>
       compileSync('---\ninvalid identifier:\n---\n', {
-        remarkPlugins: [remarkFrontmatter, [remarkMdxFrontmatter]],
+        remarkPlugins: [remarkFrontmatter, [remarkMdxNext]],
         jsx: true,
       }),
     'Frontmatter keys should be valid identifiers, got: "invalid identifier"',

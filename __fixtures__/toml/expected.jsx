@@ -1,4 +1,11 @@
 /*@jsxRuntime automatic @jsxImportSource react*/
+export function getStaticProps() {
+  return {
+    "props": {
+      "title": "Hello TOML"
+    }
+  };
+}
 export const title = "Hello TOML";
 function MDXContent(props = {}) {
   const _components = Object.assign({}, props.components), {wrapper: MDXLayout} = _components;
