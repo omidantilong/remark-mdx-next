@@ -1,12 +1,15 @@
 # remark-mdx-next
 
-> A [remark][] plugin for converting frontmatter metadata into getStaticProps
+> A [remark](https://github.com/remarkjs) plugin for converting frontmatter metadata into
+> getStaticProps
 
-Keep your MDX files clean! Based on the great [remark-mdx-frontmatter] plugin.
+Keep your MDX files clean! Based on the great
+[remark-mdx-frontmatter](https://github.com/remcohaszing/remark-mdx-frontmatter) plugin.
 
 ## Installation
 
-This package depends on the AST output by [remark-frontmatter][]
+This package depends on the AST output by
+[remark-frontmatter](https://github.com/remarkjs/remark-frontmatter)
 
 ```sh
 npm install remark-frontmatter remark-mdx-next
@@ -14,12 +17,9 @@ npm install remark-frontmatter remark-mdx-next
 
 ## Usage
 
-This remark plugin takes frontmatter content from mdx files and outputs it as props in
-getStaticProps for use in Next.js apps. Both YAML and TOML frontmatter data are supported. It also
-maintains the core functionality of [remark-mdx-frontmatter].
+This remark plugin takes frontmatter content from mdx files and outputs it as props in getStaticProps for use in Next.js apps. Both YAML and TOML frontmatter data are supported. It also maintains the core functionality of remark-mdx-frontmatter.
 
-Combine this plugin with the MDXProvider's `wrapper` component and you can keep your MDX files
-completely free of anything other than metadata and content.
+Combine this plugin with the MDXProvider's `wrapper` component and you can keep your MDX files completely free of anything other than metadata and content.
 
 For example, given a file named `example.mdx` with the following contents:
 
@@ -35,7 +35,6 @@ The following script:
 
 ```js
 import { readFileSync } from 'fs';
-
 import remarkFrontmatter from 'remark-frontmatter';
 import { remarkMDXNext } from 'remark-mdx-next';
 import { compileSync } from 'xdm';
