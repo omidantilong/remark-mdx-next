@@ -1,1 +1,2 @@
-*.jsx
+__fixtures__/**/*.jsx
+*.md
