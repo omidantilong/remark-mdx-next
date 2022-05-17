@@ -6,7 +6,7 @@ import { MDXJSEsm } from 'mdast-util-mdx';
 import { parse } from 'toml';
 import { Attacher } from 'unified';
 
-export interface RemarkMdxFrontmatterOptions {
+export interface RemarkMdxNextOptions {
   /**
    * If specified, the YAML data is exported using this name. Otherwise, each
    * object key will be used as an export name.
@@ -15,12 +15,12 @@ export interface RemarkMdxFrontmatterOptions {
 }
 
 /**
- * A remark plugin to expose frontmatter data as named exports.
+ * A remark plugin to expose frontmatter data as getStaticProps.
  *
  * @param options - Optional options to configure the output.
  * @returns A unified transformer.
  */
-export const remarkMdxFrontmatter: Attacher<[RemarkMdxFrontmatterOptions?]> =
+export const remarkMdxNext: Attacher<[RemarkMdxNextOptions?]> =
   ({ name } = {}) =>
   (ast) => {
     const mdast = ast as Root;
@@ -72,7 +72,7 @@ export const remarkMdxFrontmatter: Attacher<[RemarkMdxFrontmatterOptions?]> =
                     body: [
                       {
                         type: 'ReturnStatement',
-                        argument: valueToEstree({ props: { meta: data } }),
+                        argument: valueToEstree({ props: data }),
                       },
                     ],
                   },
