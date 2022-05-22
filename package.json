@@ -1,6 +1,6 @@
 {
   "name": "remark-mdx-next",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A remark plugin for converting frontmatter metadata into MDX exports",
   "main": "dist/index.js",
   "author": "Omid Kashan <omid@antilong.com>",

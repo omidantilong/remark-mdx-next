@@ -49,6 +49,7 @@ export const remarkMdxNext: Attacher<[RemarkMdxNextOptions?]> =
       if (!name && typeof data !== 'object') {
         throw new Error(`Expected frontmatter data to be an object, got:\n${value}`);
       }
+      data = name ? { [name]: data } : data;
 
       imports.push({
         type: 'mdxjsEsm',
@@ -86,22 +87,20 @@ export const remarkMdxNext: Attacher<[RemarkMdxNextOptions?]> =
                 declaration: {
                   type: 'VariableDeclaration',
                   kind: 'const',
-                  declarations: Object.entries(name ? { [name]: data } : (data as object)).map(
-                    ([identifier, val]) => {
-                      if (!isValidIdentifierName(identifier)) {
-                        throw new Error(
-                          `Frontmatter keys should be valid identifiers, got: ${JSON.stringify(
-                            identifier,
-                          )}`,
-                        );
-                      }
-                      return {
-                        type: 'VariableDeclarator',
-                        id: { type: 'Identifier', name: identifier },
-                        init: valueToEstree(val),
-                      };
-                    },
-                  ),
+                  declarations: Object.entries(data as object).map(([identifier, val]) => {
+                    if (!isValidIdentifierName(identifier)) {
+                      throw new Error(
+                        `Frontmatter keys should be valid identifiers, got: ${JSON.stringify(
+                          identifier,
+                        )}`,
+                      );
+                    }
+                    return {
+                      type: 'VariableDeclarator',
+                      id: { type: 'Identifier', name: identifier },
+                      init: valueToEstree(val),
+                    };
+                  }),
                 },
               },
             ],
